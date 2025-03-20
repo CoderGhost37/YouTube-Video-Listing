@@ -65,8 +65,6 @@ function generateVideoCards(videos) {
     publishedAt.classList = 'text-sm px-2 pb-4';
     videoContainer.appendChild(publishedAt);
 
-    const tags = video.items.snippet.tags || [];
-
     videosContainer.appendChild(videoContainer);
   });
 }
@@ -87,7 +85,15 @@ searchForm.addEventListener('submit', (e) => {
     const filteredVideos = videos.filter((video) =>
       video.items.snippet.title.toLowerCase().includes(query.toLowerCase())
     );
-    generateVideoCards(filteredVideos);
+    if (filteredVideos.length === 0) {
+      const noResults = document.createElement('p');
+      noResults.textContent = 'No results found';
+      noResults.classList =
+        'text-white text-center col-span-3 text-lg font-bold text-center mt-4';
+      videosContainer.appendChild(noResults);
+    } else {
+      generateVideoCards(filteredVideos);
+    }
     filterToggle = true;
     clearBtn.style.display = 'block';
   }
